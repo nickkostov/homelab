@@ -25,3 +25,12 @@ ArgoCD Bootstrap
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
 ```
+
+- Apply the configurations from metallb if you have reserved your ip ranges.
+- Done.
+
+Test with contents in test dir.
+
+http://test-nginx.range.local
+
+In order to trick the router, I have created a fake MAC address in order to expose the nginx service.
