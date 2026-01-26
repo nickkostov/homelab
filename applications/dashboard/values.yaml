@@ -1,11 +1,10 @@
 fullnameOverride: kubernetes-dashboard
 
-service:
-  type: LoadBalancer
-  port: 443
-  annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.2.202
-
+kong:
+  proxy:
+    type: LoadBalancer
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 192.168.2.202
 protocolHttp: false
 
 extraArgs:
@@ -21,5 +20,3 @@ serviceAccount:
 
 metricsScraper:
   enabled: true
-
-
