@@ -1,0 +1,6 @@
+grafana:
+  enabled: false  # Grafana already deployed separately
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
