@@ -1,6 +1,16 @@
-grafana:
-  enabled: false  # Grafana already deployed separately
+alertmanager:
+  enabled: false
 
-prometheus:
-  prometheusSpec:
-    serviceMonitorSelectorNilUsesHelmValues: false
+pushgateway:
+  enabled: false
+
+server:
+  retention: 7d
+  service:
+    type: ClusterIP
+
+kubeStateMetrics:
+  enabled: true
+
+nodeExporter:
+  enabled: true
