@@ -11,4 +11,4 @@ spec:
     app: kubernetes-dashboard
   ports:
     - port: 443
-      targetPort: 8443
+      targetPort: 9090
