@@ -1,0 +1,21 @@
+fullnameOverride: kubernetes-dashboard
+
+service:
+  type: LoadBalancer
+  port: 443
+
+protocolHttp: false
+
+extraArgs:
+  - --enable-skip-login
+  - --enable-insecure-login
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name: kubernetes-dashboard
+
+metricsScraper:
+  enabled: true
