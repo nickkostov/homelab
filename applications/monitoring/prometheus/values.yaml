@@ -8,6 +8,13 @@ server:
   retention: 7d
   service:
     type: ClusterIP
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
 
 kubeStateMetrics:
   enabled: true
