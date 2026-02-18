@@ -42,7 +42,7 @@ spec:
         runAsUser: 1000
       containers:
         - name: openwebui
-          image: ghcr.io/open-webui/open-webui:main # CHANGE: pin a version tag for stability (e.g. v0.x.y)
+          image: ghcr.io/open-webui/open-webui:v0.8.3 # CHANGE: pin a version tag for stability (e.g. v0.x.y)
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080 # Open WebUI listens on 8080 in-container
