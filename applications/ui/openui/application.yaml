@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openui
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/nickkostov/homelab.git
+    targetRevision: master
+    path: applications/ui/openui
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openui
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

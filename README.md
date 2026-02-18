@@ -4,7 +4,9 @@ ArgoCD Bootstrap
 
 ## Hardware:
 
-- Optiplex MFF 3050 i5-6500
+- Optiplex 3050 MFF:
+  - Intel(R) Core(TM) i5-6500T CPU @ 2.50GHz
+  - 8GB DDR4-SODIM
 - Rotuer Asus RT-AC86U
 
 ## Prerequisites

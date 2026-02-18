@@ -1,0 +1,77 @@
+# openwebui-deployment-persistent-argocd-keep.yaml
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openwebui
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openwebui-data
+  namespace: openwebui
+  annotations:
+    # CHANGE: prevents ArgoCD pruning this PVC if it disappears from git (or prunes on sync)
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+    # Prune=false: do not prune resource during sync
+    # Delete=false: do not delete resource when ArgoCD Application is deleted
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi # CHANGE if needed
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openwebui
+  namespace: openwebui
+spec:
+  replicas: 1 # KEEP 1 when using SQLite on a single PVC
+  selector:
+    matchLabels:
+      app: openwebui
+  template:
+    metadata:
+      labels:
+        app: openwebui
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: openwebui
+          image: ghcr.io/open-webui/open-webui:main # CHANGE: pin a version tag for stability (e.g. v0.x.y)
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080 # Open WebUI listens on 8080 in-container
+          env:
+            - name: OLLAMA_BASE_URL
+              value: "http://everest.range.local:11434" # CHANGE: your external Ollama endpoint
+          volumeMounts:
+            - name: data
+              mountPath: /app/backend/data # persistent data path
+          readinessProbe:
+            httpGet:
+              path: /health # documented basic health endpoint
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: openwebui-data
