@@ -49,6 +49,11 @@ spec:
           env:
             - name: OLLAMA_BASE_URL
               value: "http://everest.range.local:11434" # CHANGE: your external Ollama endpoint
+            - name: WEBUI_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openwebui-secret   # <-- existing k8s Secret name
+                  key: WEBUI_SECRET_KEY
           volumeMounts:
             - name: data
               mountPath: /app/backend/data # persistent data path
@@ -74,4 +79,4 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: openwebui-data
+            claimName: openwebui-data 
