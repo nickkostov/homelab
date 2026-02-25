@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/nickkostov/homelab.git
     targetRevision: master
-    path: clusters/homelab/manifests/developmentapps/openui
+    path: clusters/homelab/manifests/developmentapps/openwebui
 
   destination:
     server: https://kubernetes.default.svc
