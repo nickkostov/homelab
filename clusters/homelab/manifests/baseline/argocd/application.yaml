@@ -32,6 +32,7 @@ spec:
       - PrunePropagationPolicy=foreground
       - ServerSideApply=true  # Critical for CRDs
       - Replace=true  # Replace instead of patch for CRDs
+      - SkipHooks=true
     retry:
       limit: 5
       backoff:
