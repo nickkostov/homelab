@@ -34,18 +34,17 @@ spec:
         app: openwebui
     spec:
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
         fsGroup: 1000
       containers:
         - name: openwebui
           image: ghcr.io/open-webui/open-webui:v0.8.3
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
           ports:
             - containerPort: 8080
               name: http
-            - containerPort: 8443
-              name: https
           env:
             - name: OLLAMA_BASE_URL
               value: "http://everest.range.local:11434"
@@ -54,33 +53,19 @@ spec:
                 secretKeyRef:
                   name: openwebui-secret
                   key: WEBUI_SECRET_KEY
-            # Enable HTTPS in Open WebUI
-            - name: ENABLE_HTTPS
-              value: "true"
-            - name: SSL_CERTFILE
-              value: "/app/backend/certs/tls.crt"
-            - name: SSL_KEYFILE
-              value: "/app/backend/certs/tls.key"
           volumeMounts:
             - name: data
               mountPath: /app/backend/data
-            - name: openwebui-tls
-              secretName: openwebui-tls
-              defaultMode: 0440
-              mountPath: /app/backend/certs
-              readOnly: true
           readinessProbe:
             httpGet:
               path: /health
-              port: 8443
-              scheme: HTTPS
+              port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /health
-              port: 8443
-              scheme: HTTPS
+              port: 8080
             initialDelaySeconds: 30
             periodSeconds: 20
           resources:
@@ -90,10 +75,44 @@ spec:
             limits:
               cpu: "2"
               memory: "4Gi"
+        
+        - name: nginx-tls
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 8443
+              name: https
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - name: tls-certs
+              mountPath: /etc/nginx/certs
+              readOnly: true
+          readinessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+      
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: openwebui-data
-        - name: openwebui-tls
+        - name: nginx-config
+          configMap:
+            name: nginx-tls-config
+        - name: tls-certs
           secret:
             secretName: openwebui-tls
