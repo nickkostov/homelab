@@ -10,7 +10,7 @@ metadata:
 spec: 
   project: argocd
   source:
-    repoURL: https://github.com/nickkkostov/homelab
+    repoURL: https://github.com/nickkostov/homelab
     path: clusters/homelab/manifests/monitoring
     targetRevision: HEAD
     directory:
