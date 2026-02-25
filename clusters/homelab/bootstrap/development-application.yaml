@@ -14,8 +14,8 @@ spec:
     path: clusters/homelab/manifests/developmentapps
     targetRevision: HEAD
     directory:
-      recurse: true
-      exclude: '{**/chart/*,**/objects/*}'
+      recurse: false  # Changed from true - only looks at top level
+      include: '{*/application.yaml,project.yaml}'
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
@@ -23,6 +23,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-  info:
-    - name: "description"
-      value: "Development Applications for Cluster Bootstraping"
