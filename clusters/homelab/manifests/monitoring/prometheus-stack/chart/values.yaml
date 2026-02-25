@@ -1,0 +1,26 @@
+prometheus-stack:
+  prometheus:
+    prometheusSpec:
+      replicas: 1
+      retention: 7d
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 10Gi
+  
+  alertmanager:
+    enabled: false
+  
+  grafana:
+    enabled: true
+    adminPassword: admin
+    service:
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: 192.168.2.201
+    persistence:
+      enabled: true
+      size: 2Gi
