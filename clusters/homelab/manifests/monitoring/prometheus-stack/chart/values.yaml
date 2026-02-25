@@ -20,7 +20,7 @@ kube-prometheus-stack:
     service:
       type: LoadBalancer
       annotations:
-        metallb.universe.tf/loadBalancerIPs: 1192.168.2.201
+        metallb.universe.tf/loadBalancerIPs: 1192.168.2.208
     extraSecretMounts:
       - name: grafana-tls
         secretName: grafana-tls
