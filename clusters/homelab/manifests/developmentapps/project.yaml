@@ -12,6 +12,7 @@ spec:
   sourceRepos:
     - https://github.com/nickkostov/argocd-apps
     - ghcr.io/nickkostov
+    - https://github.com/nickkostov/*
   destinations:
     - namespace: developmentapps
       server: https://kubernetes.default.svc
