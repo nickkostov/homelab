@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: 
+  name: middleware
+  namespace: argocd
+  annotations: 
+    argocd.argoproj.io/sync-wave: "-100"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec: 
+  project: argocd
+  source:
+    repoURL: https://github.com/nickkkostov/homelab
+    path: clusters/homelab/manifests/monitoring
+    targetRevision: HEAD
+    directory:
+      recurse: true
+      exclude: '{**/chart/*,**/objects/*}'
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  info:
+    - name: "description"
+      value: "Monitoring Applications"

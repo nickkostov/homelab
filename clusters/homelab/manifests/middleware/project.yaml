@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: middleware
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io/background
+  annotations:
+    argocd.argoproj.io/sync-wave: "-180"
+spec:
+  description: Middleware Project
+  sourceRepos:
+    - https://github.com/nickkostov/*
+    - ghcr.io/nickkostov
+  destinations:
+    - namespace: '*'
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'

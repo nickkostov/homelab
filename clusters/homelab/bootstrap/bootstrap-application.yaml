@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bootstrap
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-100"
+spec:
+  project: argocd
+  source:
+    repoURL: https://github.com/nickkostov/homelab
+    path: clusters/homelab/bootstrap
+    targetRevision: HEAD
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  info:
+    - name: "Description"
+      value: "ArgoCD Projects and Apps (App of Apps) for Cluster Bootstraping"

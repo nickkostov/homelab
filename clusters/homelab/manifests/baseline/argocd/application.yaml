@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-140"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io/background
+spec:
+  project: argocd
+  source:
+    repoURL: https://github.com/nickkostov/homelab
+    path: clusters/homelab/manifests/baseline/argocd/chart
+    targetRevision: HEAD
+    helm:
+      releaseName: argocd
+      version: v3
+      valueFiles:
+        - values.yaml
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+      - PrunePropagationPolicy=foreground
+  info:
+    - name: "Description"
+      value: "ArgoCD self-management"

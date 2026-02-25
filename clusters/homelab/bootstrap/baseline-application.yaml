@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: baseline
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-100"
+spec:
+  project: argocd
+  source:
+    repoURL: https://github.com/nickkostov/homelab
+    path: clusters/homelab/manifests/baseline
+    targetRevision: HEAD
+    directory:
+      recurse: true
+      exclude: '{**/chart/*,**/objects/*}'
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  info:
+    - name: "description"
+      value: "Baseline Application for Cluster Bootstraping"
