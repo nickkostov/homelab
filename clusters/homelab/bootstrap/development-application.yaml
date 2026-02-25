@@ -15,6 +15,7 @@ spec:
     targetRevision: HEAD
     directory:
       recurse: true
+      exclude: '{**/ui/*,**/chart/*,**/charts/*}'
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
