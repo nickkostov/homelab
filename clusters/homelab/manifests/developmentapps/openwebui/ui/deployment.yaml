@@ -1,5 +1,4 @@
 # openwebui-deployment-persistent-argocd-keep.yaml
-
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -11,16 +10,13 @@ metadata:
   name: openwebui-data
   namespace: openwebui
   annotations:
-    # CHANGE: prevents ArgoCD pruning this PVC if it disappears from git (or prunes on sync)
     argocd.argoproj.io/sync-options: Prune=false,Delete=false
-    # Prune=false: do not prune resource during sync
-    # Delete=false: do not delete resource when ArgoCD Application is deleted
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi # CHANGE if needed
+      storage: 5Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -40,12 +36,16 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
+        fsGroup: 1000
       containers:
         - name: openwebui
-          image: ghcr.io/open-webui/open-webui:v0.8.5
+          image: ghcr.io/open-webui/open-webui:v0.8.3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+              name: http
+            - containerPort: 8443
+              name: https
           env:
             - name: OLLAMA_BASE_URL
               value: "http://everest.range.local:11434"
@@ -54,19 +54,33 @@ spec:
                 secretKeyRef:
                   name: openwebui-secret
                   key: WEBUI_SECRET_KEY
+            # Enable HTTPS in Open WebUI
+            - name: ENABLE_HTTPS
+              value: "true"
+            - name: SSL_CERTFILE
+              value: "/app/backend/certs/tls.crt"
+            - name: SSL_KEYFILE
+              value: "/app/backend/certs/tls.key"
           volumeMounts:
             - name: data
               mountPath: /app/backend/data
+            - name: openwebui-tls
+              secretName: openwebui-tls
+              defaultMode: 0440
+              mountPath: /app/backend/certs
+              readOnly: true
           readinessProbe:
             httpGet:
               path: /health
-              port: 8080
+              port: 8443
+              scheme: HTTPS
             initialDelaySeconds: 10
             periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /health
-              port: 8080
+              port: 8443
+              scheme: HTTPS
             initialDelaySeconds: 30
             periodSeconds: 20
           resources:
@@ -79,4 +93,7 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: openwebui-data 
+            claimName: openwebui-data
+        - name: openwebui-tls
+          secret:
+            secretName: openwebui-tls
