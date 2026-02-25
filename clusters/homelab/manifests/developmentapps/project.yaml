@@ -10,12 +10,11 @@ metadata:
 spec:
   description: Development Apps Project
   sourceRepos:
-    - https://github.com/nickkostov/argocd-apps
-    - ghcr.io/nickkostov
+    - https://github.com/nickkostov/homelab
     - https://github.com/nickkostov/*
   destinations:
-    - namespace: developmentapps
+    - namespace: '*'
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
-    - group: ''
-      kind: Namespace
+    - group: '*'
+      kind: '*'
