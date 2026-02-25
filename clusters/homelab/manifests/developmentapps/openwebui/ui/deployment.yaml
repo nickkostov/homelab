@@ -1,3 +1,27 @@
+# openwebui-deployment-persistent-argocd-keep.yaml
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openwebui
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openwebui-data
+  namespace: openwebui
+  annotations:
+    # CHANGE: prevents ArgoCD pruning this PVC if it disappears from git (or prunes on sync)
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+    # Prune=false: do not prune resource during sync
+    # Delete=false: do not delete resource when ArgoCD Application is deleted
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi # CHANGE if needed
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -37,16 +61,14 @@ spec:
             httpGet:
               path: /health
               port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /health
               port: 8080
-            initialDelaySeconds: 90
-            periodSeconds: 30
-            timeoutSeconds: 5
+            initialDelaySeconds: 30
+            periodSeconds: 20
           resources:
             requests:
               cpu: "250m"
@@ -57,4 +79,4 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: openwebui-data
+            claimName: openwebui-data 
