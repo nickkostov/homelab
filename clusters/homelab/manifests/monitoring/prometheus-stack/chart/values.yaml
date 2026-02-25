@@ -20,7 +20,18 @@ kube-prometheus-stack:
     service:
       type: LoadBalancer
       annotations:
-        metallb.universe.tf/loadBalancerIPs: 192.168.2.201
+        metallb.universe.tf/loadBalancerIPs: 192.168.2.211
+    extraSecretMounts:
+      - name: grafana-tls
+        secretName: grafana-tls
+        defaultMode: 0440
+        mountPath: /etc/grafana/certs
+        readOnly: true
+    grafana.ini:
+      server:
+        protocol: https
+        cert_file: /etc/grafana/certs/tls.crt
+        cert_key: /etc/grafana/certs/tls.key
     persistence:
       enabled: true
       size: 2Gi
