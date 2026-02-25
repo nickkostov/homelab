@@ -14,7 +14,7 @@ spec:
     path: clusters/homelab/manifests/developmentapps
     targetRevision: HEAD
     directory:
-      recurse: false  # Changed from true - only looks at top level
+      recurse: true  # Changed from true - only looks at top level
       include: '{*/application.yaml,project.yaml}'
   destination:
     server: https://kubernetes.default.svc
