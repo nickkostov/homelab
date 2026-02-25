@@ -32,6 +32,16 @@ kube-prometheus-stack:
         protocol: https
         cert_file: /etc/grafana/certs/tls.crt
         cert_key: /etc/grafana/certs/tls.key
+    readinessProbe:
+      httpGet:
+        path: /api/health
+        port: 3000
+        scheme: HTTPS
+    livenessProbe:
+      httpGet:
+        path: /api/health
+        port: 3000
+        scheme: HTTPS
     persistence:
       enabled: true
       size: 2Gi
