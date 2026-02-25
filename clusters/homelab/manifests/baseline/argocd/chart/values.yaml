@@ -1,20 +1,21 @@
-global:
-  domain: argocd.range.local
-
-server:
-  service:
-    type: LoadBalancer
-    annotations:
-      metallb.universe.tf/loadBalancerIPs: 192.168.2.210  # Specific IP assignment
-  certificate:
-    enabled: true
+argo-cd:
+  global:
     domain: argocd.range.local
-    issuer:
-      kind: ClusterIssuer
-      name: ca-issuer  # Uses our CA
-  ingress:
-    enabled: false
 
-configs:
-  params:
-    server.insecure: false  # HTTPS enabled
+  server:
+    service:
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: 192.168.2.210
+    certificate:
+      enabled: true
+      domain: argocd.range.local
+      issuer:
+        kind: ClusterIssuer
+        name: ca-issuer
+    ingress:
+      enabled: false
+
+  configs:
+    params:
+      server.insecure: false
