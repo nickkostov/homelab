@@ -1,7 +1,13 @@
 argo-cd:
   global:
     domain: argocd.range.local
-
+  
+  redis:
+    enabled: true
+    
+  redis-secret-init:
+    enabled: false
+  
   server:
     service:
       type: LoadBalancer
@@ -15,7 +21,13 @@ argo-cd:
         name: ca-issuer
     ingress:
       enabled: false
-
+  
   configs:
     params:
       server.insecure: false
+    cm:
+      accounts.dipmon: login,apiKey
+      admin.enabled: true
+      create: true
+      exec.enabled: true
+      url: https://argocd.range.local

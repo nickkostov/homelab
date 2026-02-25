@@ -1,13 +1,10 @@
-# Update argocd Application with server-side apply
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: argocd
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-140"
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io/background
+    argocd.argoproj.io/sync-wave: "-200"
 spec:
   project: argocd
   source:
@@ -16,30 +13,18 @@ spec:
     targetRevision: HEAD
     helm:
       releaseName: argocd
-      version: v3
       valueFiles:
         - values.yaml
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
   syncPolicy:
-    automated:
-      prune: false
-      selfHeal: false
     syncOptions:
       - CreateNamespace=false
-      - PruneLast=true
-      - PrunePropagationPolicy=foreground
-      - ServerSideApply=true  # Critical for CRDs
-      - Replace=true  # Replace instead of patch for CRDs
-      - SkipHooks=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m
-  ignoreDifferences:  # Ignore large CRD annotation changes
+      - ServerSideApply=true
+      - Replace=true
+      - SkipHooks=true  # Skip redis-secret-init hook
+  ignoreDifferences:
     - group: apiextensions.k8s.io
       kind: CustomResourceDefinition
       jsonPointers:
