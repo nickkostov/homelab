@@ -3,12 +3,10 @@ kind: Application
 metadata:
   name: developmentapps
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "-100"
   finalizers:
     - resources-finalizer.argocd.argoproj.io/background
 spec: 
-  project: argocd
+  project: developmentapps
   source:
     repoURL: https://github.com/nickkostov/homelab
     path: clusters/homelab/manifests/developmentapps
