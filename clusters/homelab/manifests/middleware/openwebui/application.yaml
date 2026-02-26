@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/nickkostov/homelab
     targetRevision: HEAD
-    path: clusters/homelab/manifests/developmentapps/openwebui/ui
+    path: clusters/homelab/manifests/middleware/openwebui/ui
   destination:
     server: https://kubernetes.default.svc
     namespace: openwebui
