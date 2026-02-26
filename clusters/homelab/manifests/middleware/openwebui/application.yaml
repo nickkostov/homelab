@@ -3,14 +3,12 @@ kind: Application
 metadata:
   name: openwebui
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
 spec:
   project: middleware
   source:
     repoURL: https://github.com/nickkostov/homelab
-    targetRevision: HEAD
     path: clusters/homelab/manifests/middleware/openwebui/ui
+    targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
     namespace: openwebui
