@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: application-type-1
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "-150"
+spec:
+  description: application type 1 project
+  sourceRepos:
+    - https://github.com/nickkostov/application-type-1
+    - ghcr.io/nickkostov
+  destinations:
+    - namespace: application-type-1
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace
