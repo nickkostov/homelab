@@ -13,8 +13,9 @@ spec:
       targetRevision: 0.28.1
       helm:
         valueFiles:
-          - $values/clusters/homelab/vault/values.yaml
-    - repoURL: https://github.com/your-user/your-gitops-repo.git
+          - values.yaml
+    - repoURL: https://github.com/nickkostov/homelab
+      path: clusters/homelab/manifests/middleware/vault
       targetRevision: HEAD
       ref: values
   destination:
