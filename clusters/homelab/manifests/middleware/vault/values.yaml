@@ -24,12 +24,14 @@ server:
         service_registration "kubernetes" {}
   service:
     type: LoadBalancer
-    loadBalancerIP: 192.168.2.204
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 192.168.2.204
 
 ui:
   enabled: true
   serviceType: LoadBalancer
-  loadBalancerIP: 192.168.2.204
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.2.204
 
 injector:
   enabled: false
