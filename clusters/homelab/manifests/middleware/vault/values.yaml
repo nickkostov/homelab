@@ -20,10 +20,14 @@ server:
       }
   ha:
     enabled: false
-  extraVolumes:
-    - type: secret
-      name: vault-tls
-      path: /vault/tls
+  volumes:
+    - name: vault-tls
+      secret:
+        secretName: vault-tls
+  volumeMounts:
+    - name: vault-tls
+      mountPath: /vault/tls
+      readOnly: true
   service:
     type: LoadBalancer
     port: 443
