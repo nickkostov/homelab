@@ -3,6 +3,8 @@ kind: Certificate
 metadata:
   name: vault-tls
   namespace: vault
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"  # <-- add this
 spec:
   secretName: vault-tls
   issuerRef:
