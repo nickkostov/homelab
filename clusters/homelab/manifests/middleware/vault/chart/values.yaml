@@ -1,4 +1,7 @@
 server:
+  extraEnvironmentVars:
+    VAULT_ADDR: "https://127.0.0.1:8200"
+    VAULT_SKIP_VERIFY: "true"
   enabled: true
   dataStorage:
     enabled: true
