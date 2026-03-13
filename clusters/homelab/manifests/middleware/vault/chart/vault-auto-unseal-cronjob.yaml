@@ -38,6 +38,16 @@ spec:
                 - /bin/sh
                 - -c
                 - |
+                  # Wait for Vault to be reachable
+                  for i in $(seq 1 30); do
+                    STATUS=$(vault status -format=json 2>/dev/null)
+                    if [ $? -eq 0 ] || echo "$STATUS" | grep -q '"sealed"'; then
+                      break
+                    fi
+                    echo "Vault not ready, retrying in 5s... ($i/30)"
+                    sleep 5
+                  done
+                  
                   SEALED=$(vault status -format=json 2>/dev/null | grep -o '"sealed":true')
                   if [ "$SEALED" = '"sealed":true' ]; then
                     echo "Vault is sealed. Unsealing..."
@@ -46,6 +56,6 @@ spec:
                     vault operator unseal "$VAULT_UNSEAL_KEY_3"
                     echo "Unseal complete."
                   else
-                    echo "Vault is already unsealed or not ready."
+                    echo "Vault is already unsealed or unreachable after retries."
                   fi
           restartPolicy: OnFailure
