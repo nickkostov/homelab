@@ -13,6 +13,7 @@ spec:
     - https://github.com/nickkostov/*
     - ghcr.io/nickkostov
     - https://helm.releases.hashicorp.com
+    - https://bitnami-labs.github.io/sealed-secrets
   destinations:
     - namespace: '*'
       server: https://kubernetes.default.svc

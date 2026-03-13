@@ -1,0 +1,27 @@
+# applications/baseline/sealed-secrets.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sealed-secrets
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: middleware
+  sources:
+    - repoURL: https://github.com/nickkostov/homelab
+      path: clusters/homelab/manifests/middleware/kubeseal/chart
+      targetRevision: HEAD
+      helm:
+        releaseName: sealed-secrets
+        valueFiles:
+          - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
