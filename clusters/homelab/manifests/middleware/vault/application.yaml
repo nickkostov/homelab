@@ -17,6 +17,9 @@ spec:
     - repoURL: https://github.com/nickkostov/homelab
       targetRevision: HEAD
       ref: values
+    - repoURL: https://github.com/nickkostov/homelab
+      targetRevision: HEAD
+      path: clusters/homelab/manifests/middleware/vault/
   destination:
     server: https://kubernetes.default.svc
     namespace: vault
