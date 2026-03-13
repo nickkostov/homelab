@@ -13,13 +13,13 @@ spec:
       targetRevision: 0.28.1
       helm:
         valueFiles:
-          - $values/clusters/homelab/manifests/middleware/vault/values.yaml
+          - $values/clusters/homelab/manifests/middleware/vault/chart/values.yaml
     - repoURL: https://github.com/nickkostov/homelab
       targetRevision: HEAD
       ref: values
     - repoURL: https://github.com/nickkostov/homelab
       targetRevision: HEAD
-      path: clusters/homelab/manifests/middleware/vault/
+      path: clusters/homelab/manifests/middleware/vault/chart/
   destination:
     server: https://kubernetes.default.svc
     namespace: vault
