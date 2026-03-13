@@ -12,6 +12,7 @@ spec:
   sourceRepos:
     - https://github.com/nickkostov/*
     - ghcr.io/nickkostov
+    - https://helm.releases.hashicorp.com
   destinations:
     - namespace: '*'
       server: https://kubernetes.default.svc
