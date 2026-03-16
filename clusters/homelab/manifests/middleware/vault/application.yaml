@@ -5,11 +5,11 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-    notifications.argoproj.io/subscribe.on-deployed.webhook-teams-webhook: planet-portal
-    notifications.argoproj.io/subscribe.on-sync-failed.webhook-teams-webhook: planet-portal
-    notifications.argoproj.io/subscribe.on-health-degraded.webhook-teams-webhook: planet-portal
-    notifications.argoproj.io/subscribe.on-sync-status-unknown.webhook-teams-webhook: planet-portal
-    notifications.argoproj.io/subscribe.on-sync-running.webhook-teams-webhook: planet-portal
+    notifications.argoproj.io/subscribe.on-deployed.webhook:teams: ""
+    notifications.argoproj.io/subscribe.on-sync-failed.webhook:teams: ""
+    notifications.argoproj.io/subscribe.on-health-degraded.webhook:teams: ""
+    notifications.argoproj.io/subscribe.on-sync-status-unknown.webhook:teams: ""
+    notifications.argoproj.io/subscribe.on-sync-running.webhook:teams: ""
 spec:
   project: middleware
   sources:
