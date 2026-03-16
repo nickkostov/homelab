@@ -8,8 +8,6 @@ metadata:
     notifications.argoproj.io/subscribe.on-deployed.teams: planet-portal
     notifications.argoproj.io/subscribe.on-sync-failed.teams: planet-portal
     notifications.argoproj.io/subscribe.on-health-degraded.teams: planet-portal
-    notifications.argoproj.io/subscribe.on-sync-status-unknown.teams: planet-portal
-    notifications.argoproj.io/subscribe.on-sync-running.teams: planet-portal
 spec:
   project: middleware
   sources:
