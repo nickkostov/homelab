@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-notifications-cm
+  namespace: argocd
+data:
+  service.teams: |
+    recipientUrls:
+      planet-portal: $planet-portal-microsoft-teams-webhook
+  template.deployment-success: |
+    teams:
+      title: "Deployment Successful"
+      text: |
+        **App:** {{.app.metadata.name}}
+        **Status:** Succeeded
+        **Images:** {{range .app.status.summary.images}}{{.}} {{end}}
+        [Open in ArgoCD]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})
+  template.deployment-failed: |
+    teams:
+      title: "Deployment Failed"
+      text: |
+        **App:** {{.app.metadata.name}}
+        **Status:** Failed
+        **Images:** {{range .app.status.summary.images}}{{.}} {{end}}
+        **Error:** {{ default "No error message" .app.status.operationState.message }}
+        [Open in ArgoCD]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})
+  template.health-degraded: |
+    teams:
+      title: "App Health Degraded"
+      text: |
+        **App:** {{.app.metadata.name}}
+        **Health:** {{ default "Unknown" .app.status.health.status }}
+        **Images:** {{range .app.status.summary.images}}{{.}} {{end}}
+        [Open in ArgoCD]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})
+  trigger.on-deployed: |
+    - when: app.status.operationState.phase in ['Succeeded']
+      oncePer: app.status.sync.revision
+      send: [deployment-success]
+  trigger.on-sync-failed: |
+    - when: app.status.operationState.phase in ['Error', 'Failed']
+      oncePer: app.status.sync.revision
+      send: [deployment-failed]
+  trigger.on-health-degraded: |
+    - when: app.status.health.status == 'Degraded'
+      oncePer: app.status.health.status
+      send: [health-degraded]
