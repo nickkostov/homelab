@@ -1,0 +1,29 @@
+# Namespaced under 'argo-cd:' because it's a subchart dependency
+argo-cd:
+  global:
+    domain: argocd.range.local
+
+  server:
+    service:
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: 192.168.2.210
+    certificate:
+      enabled: true
+      domain: argocd.range.local
+      issuer:
+        kind: ClusterIssuer
+        name: ca-issuer
+    ingress:
+      enabled: false
+
+  configs:
+    params:
+      server.insecure: false
+
+  crds:
+    install: true
+    keep: true
+
+  notifications:
+    enabled: true

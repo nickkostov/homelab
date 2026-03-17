@@ -1,0 +1,11 @@
+apiVersion: v2
+name: argocd
+type: application
+version: 1.0.0
+
+dependencies:
+  - name: argo-cd
+    # >>> CHANGE to match your running version <
+    # v2.14.x = chart 7.8.28 | v3.3.x = chart 9.4.7
+    version: 9.4.4
+    repository: https://argoproj.github.io/argo-helm
