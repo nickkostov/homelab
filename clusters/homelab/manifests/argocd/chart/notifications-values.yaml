@@ -3,8 +3,7 @@ argo-cd:
     enabled: true
     secret:
       create: false
-    # ← service definition goes here, not under cm
-    services:
+    notifiers:
       service.webhook.discord: |
         url: $discord-webhook-url
         headers:
