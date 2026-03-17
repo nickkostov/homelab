@@ -29,6 +29,3 @@ argo-cd:
   crds:
     install: true
     keep: true
-
-  notifications:
-    enabled: true

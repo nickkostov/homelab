@@ -17,6 +17,7 @@ spec:
       releaseName: argocd
       valueFiles:
         - values.yaml
+        - notifications-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
