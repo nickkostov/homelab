@@ -18,7 +18,7 @@ argo-cd:
               {
                 "embeds": [
                   {
-                    "title": "✅ {{.app.metadata.name}} synced successfully",
+                    "title": "{{.app.metadata.name}} synced successfully",
                     "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
                     "color": 3066993,
                     "fields": [
@@ -29,7 +29,7 @@ argo-cd:
                       },
                       {
                         "name": "Revision",
-                        "value": "{{.app.status.sync.revision | trunc 7}}",
+                        "value": "{{.app.status.sync.revision}}",
                         "inline": true
                       }
                     ]
@@ -44,7 +44,7 @@ argo-cd:
               {
                 "embeds": [
                   {
-                    "title": "❌ {{.app.metadata.name}} sync failed",
+                    "title": "{{.app.metadata.name}} sync failed",
                     "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
                     "color": 15158332,
                     "fields": [
@@ -55,7 +55,7 @@ argo-cd:
                       },
                       {
                         "name": "Error",
-                        "value": "{{ default \"Unknown\" .app.status.operationState.message | trunc 200 }}",
+                        "value": "{{.app.status.operationState.message}}",
                         "inline": false
                       }
                     ]
@@ -70,13 +70,13 @@ argo-cd:
               {
                 "embeds": [
                   {
-                    "title": "⚠️ {{.app.metadata.name}} health degraded",
+                    "title": "{{.app.metadata.name}} health degraded",
                     "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
                     "color": 16776960,
                     "fields": [
                       {
                         "name": "Health",
-                        "value": "{{ default \"Unknown\" .app.status.health.status }}",
+                        "value": "{{.app.status.health.status}}",
                         "inline": true
                       },
                       {
