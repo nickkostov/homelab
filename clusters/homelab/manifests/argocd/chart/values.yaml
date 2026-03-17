@@ -20,10 +20,10 @@ argo-cd:
   configs:
     params:
       server.insecure: false
-    ui.bannercontent: "Homelab - argocd.range.local"
     cm:
       ui.bannerpermanent: "true"
       ui.bannerposition: "top"
+      ui.bannercontent: "Homelab - argocd.range.local"
 
 
   crds:
