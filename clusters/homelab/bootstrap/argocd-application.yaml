@@ -9,15 +9,19 @@ metadata:
     - resources-finalizer.argocd.argoproj.io/background
 spec:
   project: argocd
-  source:
-    repoURL: https://github.com/nickkostov/homelab
-    path: clusters/homelab/manifests/argocd/chart
-    targetRevision: HEAD
-    helm:
+  sources:
+   - repoURL: https://github.com/nickkostov/homelab
+     path: clusters/homelab/manifests/argocd/chart
+     targetRevision: HEAD
+     helm:
       releaseName: argocd
       valueFiles:
         - values.yaml
         - notifications-values.yaml
+   - repoURL: https://github.com/nickkostov/homelab
+     path: clusters/homelab/manifests/argocd/objects
+     targetRevision: HEAD
+
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
