@@ -103,7 +103,7 @@ argo-cd:
           send: [app-health-degraded]
     subscriptions:
       - recipients:
-          - discord
+          - webhook:discord
         triggers:
           - on-sync-succeeded
           - on-sync-failed
